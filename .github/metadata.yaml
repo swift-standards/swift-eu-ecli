@@ -1,0 +1,11 @@
+# .github/metadata.yaml
+description: "Swift implementation of the European Case Law Identifier (ECLI): ECLI:NL:HR:2026:123, parsed and printed."
+topics:
+  - standards
+  - eu
+  - ecli
+  - case-law
+  - legal-identifiers
+homepage: "https://swift-institute.org"
+readme:
+  family: E
