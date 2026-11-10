@@ -30,15 +30,20 @@ extension ECLI.Country {
         if upper == "GR" {
             throw .notTheStyleGuideCode(upper, styleGuide: Self.greece)
         }
-        if let alpha2 = try? ISO_3166.Alpha2(upper) {
-            self = .country(alpha2)
-            return
+        do throws(ISO_3166.Territory.Error) {
+            switch try ISO_3166.Territory(upper) {
+            case .country(let alpha2):
+                self = .country(alpha2)
+
+            case .exceptional(let exceptional):
+                self = .exceptional(exceptional)
+
+            case .subdivision:
+                self = .organisation(ECLI.Organisation(unchecked: upper))
+            }
+        } catch {
+            self = .organisation(ECLI.Organisation(unchecked: upper))
         }
-        if let exceptional = try? ISO_3166.Exceptional(upper) {
-            self = .exceptional(exceptional)
-            return
-        }
-        self = .organisation(ECLI.Organisation(unchecked: upper))
     }
 
     public var code: String {

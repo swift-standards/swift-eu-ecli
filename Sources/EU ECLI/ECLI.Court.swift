@@ -17,12 +17,16 @@ extension ECLI {
             }
             self.code = text.uppercased()
         }
+
+        private init(unchecked code: String) {
+            self.code = code
+        }
     }
 }
 
 extension ECLI.Court {
 
-    public static let unlisted = try! ECLI.Court("XX")
+    public static let unlisted = ECLI.Court(unchecked: "XX")
 
     public var isUnlisted: Bool { self == .unlisted }
 }

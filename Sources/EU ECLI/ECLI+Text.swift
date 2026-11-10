@@ -38,10 +38,12 @@ extension ECLI {
     }
 
     private static func date(_ text: Substring) throws(ECLI.Error) -> ISO_8601.CalendarDate.Reduced {
-        if text.utf8.count == 4, text.utf8.allSatisfy(ECLI.isDigit), let year = Int(text),
-            let reduced = try? ISO_8601.CalendarDate.Reduced(year: year)
-        {
-            return reduced
+        if text.utf8.count == 4, text.utf8.allSatisfy(ECLI.isDigit), let year = Int(text) {
+            do throws(ISO_8601.CalendarDate.Error) {
+                return try ISO_8601.CalendarDate.Reduced(year: year)
+            } catch {
+                throw .date(.invalid(String(text)))
+            }
         }
         if let day = ISO_8601.CalendarDate(basic: text) {
             return ISO_8601.CalendarDate.Reduced(day)
